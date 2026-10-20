@@ -1,70 +1,81 @@
-# CineGraph-AI — GNN Movie Recommendation Engine
+<p align="center">
+  <img src="https://raw.githubusercontent.com/MasterPandaa/MasterPandaa/main/assets/banners/CineGraph-AI.svg" alt="CineGraph AI Banner" width="100%">
+</p>
 
-[![Python](https://img.shields.io/badge/Python-3.9+-3776AB.svg?logo=python&logoColor=white)](#)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.x-FF4B4B.svg?logo=streamlit&logoColor=white)](#)
-[![GNN Embeddings](https://img.shields.io/badge/Model-GNN%20Graph%20Embeddings-0052CC.svg)](#)
-[![Scikit-Learn](https://img.shields.io/badge/scikit--learn-Vector%20Search-F7931E.svg?logo=scikit-learn&logoColor=white)](#)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](#)
-
-A movie recommendation web application powered by **Graph Neural Network (GNN)** node embeddings and vector similarity search. CineGraph-AI maps multi-relational film connectivity (genres, themes, latent graph structures) to generate contextual recommendations tailored to user watch history.
-
-The application serves pre-trained graph embeddings (`movie_gnn_model.pkl`) through an interactive **Streamlit** dashboard for real-time persona simulation and catalog exploration.
-
----
+<p align="center">
+  <a href="#architecture"><img src="https://img.shields.io/badge/Model-GNN_Graph_Embeddings-3B82F6?style=flat-square&logo=pytorch" alt="Model"></a>
+  <a href="#quickstart"><img src="https://img.shields.io/badge/Framework-Streamlit-FF4B4B?style=flat-square&logo=streamlit" alt="Streamlit"></a>
+  <a href="#quickstart"><img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python" alt="Python"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-10B981?style=flat-square" alt="License"></a>
+</p>
 
 ## Overview
 
-Traditional matrix factorization and collaborative filtering often overlook non-linear topological relationships between movies. CineGraph-AI leverages graph representation learning to project films into a continuous embedding space:
+Traditional collaborative filtering models compute user-item interactions through sparse matrix factorization, missing non-linear graph relationships across genres, directors, and latent thematic clusters. CineGraph AI models multi-relational film connectivity using **Graph Neural Networks (GNN)**, mapping complex film topologies into a continuous dense vector space.
 
-- **Graph Topology Mapping**: Captures deep latent connections between films that go beyond basic tag matching.
-- **Centroid-Based User Profiling**: Computes a dynamic user preference vector by averaging embeddings of selected movies (`np.mean`), adapting recommendations as titles are added or removed.
-- **Fast Similarity Search**: Calculates cosine similarity against the full catalog vector space in sub-millisecond latency.
-- **Deduplication Filter**: Automatically excludes previously watched movies from recommended outputs.
+Pre-trained node embeddings (`movie_gnn_model.pkl`) run inside an interactive **Streamlit** dashboard, delivering sub-millisecond similarity lookups and real-time persona simulation directly in memory.
 
 ---
 
-## Key Features
+## Core Capabilities
 
-- **Pre-trained GNN Embeddings (`movie_gnn_model.pkl`)**: High-dimensional graph representations capturing structural film relationships.
-- **Dynamic Watch History Matching**: Real-time Top-K movie ranking based on vector cosine proximity.
-- **Interactive Streamlit Interface**: Clean dashboard with sidebar controls for managing watch history and viewing similarity scores.
-- **Genre & Metric Filtering**: Filter recommendations by genre, sorted by global rating and popularity indicators.
-- **In-Memory Model Caching**: Uses Streamlit's `@st.cache_resource` for instant load times and responsive recalculation.
+- **Graph Topology Embeddings**: Encodes relational multi-hop film connections instead of relying solely on keyword matching.
+- **Dynamic Centroid Profiling**: Computes a dynamic user taste vector by calculating the centroid (`np.mean`) across selected watch histories.
+- **Vector Cosine Search**: Evaluates cosine similarity against the full catalog vector space in sub-millisecond retrieval times.
+- **Deduplication Engine**: Automatically filters previously selected titles out of candidate recommendation pools.
+- **In-Memory Model Caching**: Leverages Streamlit resource caching to maintain instant response times during repeated queries.
 
 ---
 
-## Installation & Setup
+## Architecture Flow
+
+```text
+User Watch History
+       │
+       ▼
+Centroid Vector Computation ──► np.mean([Emb_1, Emb_2, ...])
+       │
+       ▼
+Cosine Proximity Search    ──► Dot product against pre-trained GNN matrix
+       │
+       ▼
+Deduplication & Top-K Rank ──► Filter watched titles & return nearest film nodes
+```
+
+---
+
+## Quickstart
 
 ### Prerequisites
 
-- Python 3.9+
-- pip & virtualenv
+- Python 3.9 or higher
+- pip and virtualenv
 
-### Quickstart
+### Setup and Execution
 
-1. **Clone the repository**:
+1. Clone the repository:
    ```bash
    git clone https://github.com/MasterPandaa/CineGraph-AI.git
    cd CineGraph-AI
    ```
 
-2. **Create and activate a virtual environment**:
+2. Create and activate a virtual environment:
    ```bash
-   # Windows
+   # Windows PowerShell
    python -m venv venv
-   .\venv\Scripts\activate
+   .\venv\Scripts\Activate.ps1
 
    # Linux / macOS
    python3 -m venv venv
    source venv/bin/activate
    ```
 
-3. **Install dependencies**:
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Launch the Streamlit app**:
+4. Launch the application:
    ```bash
    streamlit run app.py
    ```
@@ -72,15 +83,15 @@ Traditional matrix factorization and collaborative filtering often overlook non-
 
 ---
 
-## Project Structure
+## Repository Structure
 
 ```text
 CineGraph-AI/
-├── app.py                  # Streamlit application interface & recommendation logic
-├── requirements.txt        # Python package dependencies
-├── movie_gnn_model.pkl     # Pre-trained GNN graph embeddings and metadata
-├── Procfile                # Deployment configuration for cloud hosting
-└── README.md               # Project documentation
+├── app.py                  # Streamlit application interface and recommendation engine
+├── requirements.txt        # Pinned Python package dependencies
+├── movie_gnn_model.pkl     # Serialized GNN node embeddings and catalog metadata
+├── Procfile                # Production deployment configuration
+└── README.md               # Architecture documentation
 ```
 
 ---
